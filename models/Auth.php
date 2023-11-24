@@ -38,4 +38,9 @@ class Auth{
         }
         return false;
     }
+
+    public function emailExists($email){
+        $userDao = new UserDaoPgsql($this->pdo);
+        return $userDao->findByEmail($email) ? true :  false;
+    }
 }
