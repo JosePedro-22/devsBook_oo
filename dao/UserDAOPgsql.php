@@ -13,15 +13,15 @@ class UserDaoPgsql implements UserDAO {
         $user = new User();
 
         $user->id = $array['id'] ?? 0;
-        $user->password = $array['password'] ?? '';
         $user->email = $array['email'] ?? '';
+        $user->password = $array['password'] ?? '';
         $user->name = $array['name'] ?? '';
-        $user->birthdate = $array['birthdate'] ?? ''; 
         $user->city = $array['city'] ?? '';
         $user->work = $array['work'] ?? '';
         $user->avatar = $array['avatar'] ?? '';
         $user->cover = $array['cover'] ?? '';
         $user->token = $array['token'] ?? '';
+        $user->birthdate = $array['birthdate'] ?? ''; 
 
         return $user;
     }
@@ -63,26 +63,40 @@ class UserDaoPgsql implements UserDAO {
 
         $sql = $this->pdo->prepare('UPDATE users SET 
             email = :email,
-            password = : password,
-            name = :name
+            password = :password,
+            name = :name,
+            city = :city,
+            work = :work,
+            avatar = :avatar,
+            cover = :cover,
+            token = :token,
             birthdate = :birthdate
-            city = :city
-            work = :work
-            avatar = :avatar
-            cover = :cover
-            token = :token
             WHERE id = :id');
+        
+        $sql->bindParam(':id',$user->id);
+        $sql->bindParam(':email',$user->email);
+        $sql->bindParam(':password',$user->password);
+        $sql->bindParam(':name',$user->name);
+        $sql->bindParam(':city',$user->city);
+        $sql->bindParam(':work',$user->work);
+        $sql->bindParam(':avatar',$user->avatar);
+        $sql->bindParam(':cover',$user->cover);
+        $sql->bindParam(':token',$user->token);
+        $sql->bindParam(':birthdate',$user->birthdate);
+        $sql->execute();
 
-        $sql->bindParam(':email',$email);
-        $sql->bindParam(':name',$name);
-        $sql->bindParam(':password',$password);
-        $sql->bindParam(':birthdate',$birthdate);
-        $sql->bindParam(':city',$city);
-        $sql->bindParam(':work',$work);
-        $sql->bindParam(':avatar',$avatar);
-        $sql->bindParam(':cover',$cover);
-        $sql->bindParam(':token',$token);
-        $sql->bindParam(':id',$id);
+        return true;
+    }
+
+    public function insert(User $user){
+        $sql = $this->pdo->prepare('INSERT INTO users (email,password,name,token,birthdate) VALUES (:email,:password,:name ,:token,:birthdate)');
+
+        $sql->bindParam(':email',$user->email);
+        $sql->bindParam(':name',$user->name);
+        $sql->bindParam(':password',$user->password);
+        $sql->bindParam(':birthdate',$user->birthdate);
+        $sql->bindParam(':token',$user->token);
+        $sql->execute();
         
         return true;
     }
