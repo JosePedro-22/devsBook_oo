@@ -22,7 +22,7 @@
                 </div>
                 <div class="head-side-right">
                     <a href="" class="user-area">
-                        <div class="user-area-text">Bonieky</div>
+                        <div class="user-area-text"><?=$userInfo->name;?></div>
                         <div class="user-area-icon">
                             <img src="<?=$base;?>/media/avatars/avatar.jpg" />
                         </div>
