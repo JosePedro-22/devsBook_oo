@@ -2,7 +2,7 @@
     <div class="box-body">
         <div class="feed-new-editor m-10 row">
             <div class="feed-new-avatar">
-                <img src="<?=$base?>/media/avatars/<?php $userInfo->avatar;?>" />
+                <img src="<?=$base?>/media/avatars/avatar.jpg" />
             </div>
             <div class="feed-new-input-placeholder">O que você está pensando, <?=$userInfo->name?>?</div>
             <div class="feed-new-input" contenteditable="true"></div>

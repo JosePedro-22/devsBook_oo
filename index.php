@@ -2,13 +2,20 @@
 
 require 'config.php';
 require 'models/Auth.php';
+require 'dao/UserRelationDAOPgsql.php';
 
 $auth = new Auth($pdo, $base);
 $userInfo = $auth->checkToken();
 $activeMenu = 'home';
 
+$urDao = new UserRelationDaoPgsql($pdo);
+$userList = $urDao->getRelationsFrom($userInfo->id);
+print_r($userList);
+// exit;
 require './partials/header.php';
 require './partials/menuLateral.php';
+
+
 ?>
 <section class="feed mt-10">
     <div class="row">
