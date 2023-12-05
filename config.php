@@ -1,7 +1,8 @@
 <?php 
 session_start();
 
-$base = 'http://localhost/devsbook_OO';
+// $base = 'http://localhost:8000/devsbook_OO';
+$base = 'http://127.0.0.1:8000/devsbook_OO';
 
 $db_name = 'devsBook';
 $db_host = 'localhost';
