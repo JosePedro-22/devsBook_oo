@@ -1,6 +1,6 @@
 <aside class="mt-10">
     <nav>
-        <a href="">
+        <a href="<?=$base;?>/index.php">
             <div class="menu-item <?=($activeMenu == 'home' ? 'active' : '')?>">
                 <div class="menu-item-icon">
                     <img src="<?=$base;?>/assets/images/home-run.png" width="16" height="16" />
@@ -10,8 +10,8 @@
                 </div>
             </div>
         </a>
-        <a href="">
-            <div class="menu-item <?=($activeMenu == 'perfil' ? 'active' : '')?>">
+        <a href="<?=$base;?>/perfil.php">
+            <div class="menu-item <?=($activeMenu == 'profile' ? 'active' : '')?>">
                 <div class="menu-item-icon">
                     <img src="<?=$base;?>/assets/images/user.png" width="16" height="16" />
                 </div>
