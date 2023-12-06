@@ -16,7 +16,7 @@ class UserRelationDaoPgsql implements UserRelationsDAO {
 
     public function getRelationsFrom($id)
     {
-        $users = [$id];
+        $users = [];
 
         $sql = $this->pdo->prepare('SELECT user_to FROM userrelations WHERE user_from = :user_from');
 

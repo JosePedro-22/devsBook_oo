@@ -32,16 +32,12 @@ class PostDAOPgsql implements PostDAO {
         $userList = $urDao->getRelationsFrom($id_user);
 
         $sql = $this->pdo->query('SELECT * FROM posts
-        WHERE id_user  IN ('.implode(',',$userList).')
-        ORDER BY created_at DESC');
+        WHERE id_user  IN ('.implode(',',$userList).') ORDER BY created_at DESC');
 
         if($sql->rowCount() > 0){
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-
             $array = $this->_postListToObject($data, $id_user);
         }
-        
-
         return $array;
     }
 
@@ -66,6 +62,7 @@ class PostDAOPgsql implements PostDAO {
             $newPost->likeCount = 0;
             $newPost->liked = false;
 
+            $newPost->comments = [];
             $posts[] = $newPost;
         }
         return $posts;

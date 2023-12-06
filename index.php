@@ -32,8 +32,8 @@ require './partials/menuLateral.php';
                     </div>
                 </div>
                 <div class="box-body">
-                    <a href=""><img src="<?=$base;?>/media/courses/php-nivel-1.jpg" /></a>
-                    <a href=""><img src="<?=$base;?>/media/courses/laravel-nivel-1.jpg" /></a>
+                    <a href=""><img src="<?=$base;?>/media/uploads/1.jpg" /></a>
+                    <a href=""><img src="<?=$base;?>/media/uploads/1.jpg" /></a>
                 </div>
             </div>
             <div class="box">
