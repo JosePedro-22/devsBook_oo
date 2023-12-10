@@ -11,9 +11,11 @@ class Post {
     public $user;
     public $likeCount;
     public $liked;
+    public $comments;
 }
 
 interface PostDAO{
     public function insert(Post $p);
     public function getHomeFeed($id_user);
+    public function getPerfilFeed($id_user);
 }

@@ -15,10 +15,10 @@ if($id){
 
 $postDao = new PostDAOPgsql($pdo);
 $userDao = new UserDaoPgsql($pdo);
-/*
-
-$feed = $postDao->getHomeFeed($userInfo->id);
-*/
+$feed = $postDao->getPerfilFeed($userInfo->id);
+// echo '<pre>';
+// print_r($feed);
+// exit;
 require './partials/header.php';
 require './partials/menuLateral.php';
 
@@ -33,26 +33,28 @@ $years = $diferenca->y;
         <div class="row">
             <div class="box flex-1 border-top-flat">
                 <div class="box-body">
-                    <div class="profile-cover" style="background-image: url('media/covers/cover.jpg');"></div>
+                    <div class="profile-cover" style="background-image: url('<?=$base?>/media/covers/cover.jpg');"></div>
                     <div class="profile-info m-20 row">
                         <div class="profile-info-avatar">
-                            <img src="media/avatars/avatar.jpg" />
+                            <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                         </div>
                         <div class="profile-info-name">
                             <div class="profile-info-name-text"><?=$userInfo->name?></div>
-                            <div class="profile-info-location"><?=$userInfo->city?></div>
+                            <?php if(!empty($userInfo->city)):?>
+                                <div class="profile-info-location"><?=$userInfo->city?></div>
+                            <?php endif?>
                         </div>
                         <div class="profile-info-data row">
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">129</div>
+                                <div class="profile-info-item-n">-1</div>
                                 <div class="profile-info-item-s">Seguidores</div>
                             </div>
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">363</div>
+                                <div class="profile-info-item-n">-1</div>
                                 <div class="profile-info-item-s">Seguindo</div>
                             </div>
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">12</div>
+                                <div class="profile-info-item-n">-1</div>
                                 <div class="profile-info-item-s">Fotos</div>
                             </div>
                         </div>
@@ -69,18 +71,22 @@ $years = $diferenca->y;
                     <div class="box-body">
 
                         <div class="user-info-mini">
-                            <img src="assets/images/calendar.png" />
+                            <img src="<?=$base?>/assets/images/calendar.png" />
                             <?= $date?>    (<?= $years?>  anos)
                         </div>
 
                         <div class="user-info-mini">
-                            <img src="assets/images/pin.png" />
-                            <?=$userInfo->city?>, Brasil
+                            <?php if(!empty($userInfo->city)):?>
+                                <img src="<?=$base?>/assets/images/pin.png" />
+                                <?=$userInfo->city?>, Brasil
+                            <?php endif?>
                         </div>
 
                         <div class="user-info-mini">
-                            <img src="assets/images/work.png" />
-                            <?=$userInfo->work?>
+                        <?php if(!empty($userInfo->work)):?>
+                                <img src="<?=$base?>/assets/images/work.png" />
+                                <?=$userInfo->work?>
+                            <?php endif?>
                         </div>
 
                     </div>
@@ -101,7 +107,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -112,7 +118,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -123,7 +129,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -134,7 +140,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -145,7 +151,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -156,7 +162,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -167,7 +173,7 @@ $years = $diferenca->y;
                         <div class="friend-icon">
                             <a href="">
                                 <div class="friend-icon-avatar">
-                                    <img src="media/avatars/avatar.jpg" />
+                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
                                 </div>
                                 <div class="friend-icon-name">
                                     Bonieky
@@ -232,7 +238,7 @@ $years = $diferenca->y;
                     </div>
                 </div>
 
-                <div class="box feed-item">
+                <!-- <div class="box feed-item">
                     <div class="box-body">
                         <div class="feed-item-head row mt-20 m-width-20">
                             <div class="feed-item-head-photo">
@@ -288,9 +294,10 @@ $years = $diferenca->y;
 
                         </div>
                     </div>
-                </div>
-
-
+                </div> -->
+                <?php foreach($feed as $item):?>
+                    <?php require('./partials/body.php')?>
+                <?php endforeach;?>
             </div>
 
         </div>
