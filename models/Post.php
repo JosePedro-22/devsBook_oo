@@ -6,7 +6,6 @@ class Post {
     public $type;
     public $created_at;
     public $body;
-    //para PostDAOPgsql
     public $mine;
     public $user;
     public $likeCount;

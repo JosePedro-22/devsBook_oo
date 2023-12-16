@@ -1,6 +1,7 @@
 <?php
 
 require_once 'models/User.php';
+require_once 'dao/UserRelationDAOPgsql.php';
 
 class UserDaoPgsql implements UserDAO {
     private $pdo;
@@ -9,7 +10,7 @@ class UserDaoPgsql implements UserDAO {
         $this->pdo = $driver;
     }
 
-    private function generateUser($array){
+    private function generateUser($array, $full = false){
         $user = new User();
 
         $user->id = $array['id'] ?? 0;
@@ -23,6 +24,15 @@ class UserDaoPgsql implements UserDAO {
         $user->token = $array['token'] ?? '';
         $user->birthdate = $array['birthdate'] ?? ''; 
 
+        if($full){
+            $urDaoPgsql = new UserRelationDAOPgsql($this->pdo);
+            
+            $user->followers = $urDaoPgsql->getFollowers($user->id);
+            $user->following = $urDaoPgsql->getFollowing($user->id);
+
+            $user->photos = [];
+
+        }
         return $user;
     }
 
@@ -59,7 +69,7 @@ class UserDaoPgsql implements UserDAO {
         return false;
     }
 
-    public function findById($id){
+    public function findById($id, $full = false){
         if(!empty($id)){
             $sql = $this->pdo->prepare('SELECT * FROM users WHERE id = :id');
             $sql->bindParam(':id',$id);
@@ -67,7 +77,7 @@ class UserDaoPgsql implements UserDAO {
 
             if($sql->rowCount() > 0) {
                 $data = $sql->fetch(PDO::FETCH_ASSOC);
-                $user = $this->generateUser($data);
+                $user = $this->generateUser($data, $full);
                 return $user;
             }
         }

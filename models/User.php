@@ -11,12 +11,15 @@ class User {
     public $avatar;
     public $cover;
     public $token;
+    public $followers;
+    public $following;
+    public $photos;
 }
 
 interface UserDAO{
     public function findByToken($token);
     public function findByEmail($email);
-    public function findById($id);
+    public function findById($id, $full = false);
     public function update(User $user);
     public function insert(User $user);
 }

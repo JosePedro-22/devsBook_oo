@@ -9,24 +9,34 @@ $userInfo = $auth->checkToken();
 $activeMenu = 'profile';
 
 $id = filter_input(INPUT_GET, 'id');
+
 if($id){
     $id = $userInfo->id;
 }
 
 $postDao = new PostDAOPgsql($pdo);
 $userDao = new UserDaoPgsql($pdo);
-$feed = $postDao->getPerfilFeed($userInfo->id);
-// echo '<pre>';
-// print_r($feed);
-// exit;
-require './partials/header.php';
-require './partials/menuLateral.php';
+
+$user = $userDao->findById($userInfo->id, true);
+if(!$user){
+    header("Location: ".$base);
+    exit;
+}
+$seguindo = count($user->following);
+$seguidores = count($user->followers);
+$fotos = count($user->photos);
 
 $date = date('d/m/Y', strtotime(str_replace('-','/',$userInfo->birthdate)));
 $dataNascimento = new DateTime($date);
 $dataAtual = new DateTime();
 $diferenca = $dataAtual->diff($dataNascimento);
 $years = $diferenca->y;
+
+$feed = $postDao->getPerfilFeed($userInfo->id);
+
+require './partials/header.php';
+require './partials/menuLateral.php';
+
 ?>
     <section class="feed">
 
@@ -46,15 +56,15 @@ $years = $diferenca->y;
                         </div>
                         <div class="profile-info-data row">
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">-1</div>
+                                <div class="profile-info-item-n"><?php echo $seguidores?></div>
                                 <div class="profile-info-item-s">Seguidores</div>
                             </div>
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">-1</div>
+                                <div class="profile-info-item-n"><?php echo $seguindo?></div>
                                 <div class="profile-info-item-s">Seguindo</div>
                             </div>
                             <div class="profile-info-item m-width-20">
-                                <div class="profile-info-item-n">-1</div>
+                                <div class="profile-info-item-n"><?php echo $fotos?></div>
                                 <div class="profile-info-item-s">Fotos</div>
                             </div>
                         </div>
@@ -96,102 +106,39 @@ $years = $diferenca->y;
                     <div class="box-header m-10">
                         <div class="box-header-text">
                             Seguindo
-                            <span>(363)</span>
+                            <span>(<?php echo $seguindo?>)</span>
                         </div>
                         <div class="box-header-buttons">
-                            <a href="">ver todos</a>
+                            <a href="<?=$base;?>/amigos.php?id=<?=$user->id;?>">ver todos</a>
                         </div>
                     </div>
                     <div class="box-body friend-list">
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="friend-icon">
-                            <a href="">
-                                <div class="friend-icon-avatar">
-                                    <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                </div>
-                                <div class="friend-icon-name">
-                                    Bonieky
-                                </div>
-                            </a>
-                        </div>
-
+                        <a href="">
+                            <?php if(count($user->following) > 0 ):?>
+                                <?php foreach($user->following as $item):?>
+                                    <div class="friend-icon">
+                                        <a href="">
+                                            <div class="friend-icon-avatar">
+                                                <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
+                                            </div>
+                                            <div class="friend-icon-name">
+                                                <?php echo $item?>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </a>
                     </div>
                 </div>
 
             </div>
             <div class="column pl-5">
-
                 <div class="box">
                     <div class="box-header m-10">
                         <div class="box-header-text">
                             Fotos
-                            <span>(12)</span>
+                            <span>(<?php echo $fotos?>)</span>
                         </div>
                         <div class="box-header-buttons">
                             <a href="">ver todos</a>
