@@ -20,7 +20,7 @@
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="<?=$base;?>/amigos.php/?id=<?=$userInfo->id?>">
             <div class="menu-item <?=($activeMenu == 'amigos' ? 'active' : '')?>">
                 <div class="menu-item-icon">
                     <img src="<?=$base;?>/assets/images/friends.png" width="16" height="16" />
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="<?=$base;?>/fotos.php/?id=<?=$userInfo->id?>">
             <div class="menu-item <?=($activeMenu == 'fotos' ? 'active' : '')?>">
                 <div class="menu-item-icon">
                     <img src="<?=$base;?>/assets/images/photo.png" width="16" height="16" />
