@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="head-side-right">
-                    <a href="" class="user-area">
+                    <a href="<?=$base;?>/perfil.php/?id=<?=$userInfo->id?>" class="user-area">
                         <div class="user-area-text"><?=$userInfo->name;?></div>
                         <div class="user-area-icon">
                             <img src="<?=$base;?>/media/avatars/<?=$userInfo->avatar;?>" />

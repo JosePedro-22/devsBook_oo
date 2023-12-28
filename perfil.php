@@ -1,27 +1,23 @@
 <?php
 
-require 'config.php';
-require 'models/Auth.php';
-require 'dao/PostDAOPgsql.php';
+require_once 'config.php';
+require_once 'models/Auth.php';
+require_once 'dao/PostDAOPgsql.php';
 
 $auth = new Auth($pdo, $base);
 $userInfo = $auth->checkToken();
 $activeMenu = 'profile';
-
 $id = filter_input(INPUT_GET, 'id');
-
-if($id){
-    $id = $userInfo->id;
-}
 
 $postDao = new PostDAOPgsql($pdo);
 $userDao = new UserDaoPgsql($pdo);
 
-$user = $userDao->findById($userInfo->id, true);
+$user = $userDao->findById($id, true);
 if(!$user){
     header("Location: ".$base);
     exit;
 }
+
 $seguindo = count($user->following);
 $seguidores = count($user->followers);
 $fotos = count($user->photos);
@@ -32,7 +28,11 @@ $dataAtual = new DateTime();
 $diferenca = $dataAtual->diff($dataNascimento);
 $years = $diferenca->y;
 
-$feed = $postDao->getPerfilFeed($userInfo->id);
+$feed = $postDao->getUserFeed($id);
+
+if($id != $userInfo->id) $activeMenu = '';
+
+// if($id) $id = $userInfo->id;
 
 require './partials/header.php';
 require './partials/menuLateral.php';
@@ -46,12 +46,12 @@ require './partials/menuLateral.php';
                     <div class="profile-cover" style="background-image: url('<?=$base?>/media/covers/cover.jpg');"></div>
                     <div class="profile-info m-20 row">
                         <div class="profile-info-avatar">
-                            <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
+                            <img src="<?=$base?>/media/avatars/<?=$user->avatar?>" />
                         </div>
                         <div class="profile-info-name">
-                            <div class="profile-info-name-text"><?=$userInfo->name?></div>
-                            <?php if(!empty($userInfo->city)):?>
-                                <div class="profile-info-location"><?=$userInfo->city?></div>
+                            <div class="profile-info-name-text"><?=$user->name?></div>
+                            <?php if(!empty($user->city)):?>
+                                <div class="profile-info-location"><?=$user->city?></div>
                             <?php endif?>
                         </div>
                         <div class="profile-info-data row">
@@ -86,16 +86,16 @@ require './partials/menuLateral.php';
                         </div>
 
                         <div class="user-info-mini">
-                            <?php if(!empty($userInfo->city)):?>
+                            <?php if(!empty($user->city)):?>
                                 <img src="<?=$base?>/assets/images/pin.png" />
-                                <?=$userInfo->city?>, Brasil
+                                <?=$user->city?>, Brasil
                             <?php endif?>
                         </div>
 
                         <div class="user-info-mini">
-                        <?php if(!empty($userInfo->work)):?>
+                        <?php if(!empty($user->work)):?>
                                 <img src="<?=$base?>/assets/images/work.png" />
-                                <?=$userInfo->work?>
+                                <?=$user->work?>
                             <?php endif?>
                         </div>
 
@@ -113,22 +113,20 @@ require './partials/menuLateral.php';
                         </div>
                     </div>
                     <div class="box-body friend-list">
-                        <a href="">
-                            <?php if(count($user->following) > 0 ):?>
-                                <?php foreach($user->following as $item):?>
-                                    <div class="friend-icon">
-                                        <a href="">
-                                            <div class="friend-icon-avatar">
-                                                <img src="<?=$base?>/media/avatars/<?=$userInfo->avatar?>" />
-                                            </div>
-                                            <div class="friend-icon-name">
-                                                <?php echo $item?>
-                                            </div>
-                                        </a>
-                                    </div>
-                                <?php endforeach;?>
-                            <?php endif;?>
-                        </a>
+                        <?php if(count($user->following) > 0 ):?>
+                            <?php foreach($user->following as $item):?>
+                                <div class="friend-icon">
+                                    <a href="<?=$base?>/perfil.php/?id=<?=$item->id?>">
+                                        <div class="friend-icon-avatar">
+                                            <img src="<?=$base?>/media/avatars/<?=$item->avatar?>" />
+                                        </div>
+                                        <div class="friend-icon-name">
+                                            <?php echo $item->name?>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php endforeach;?>
+                        <?php endif;?>
                     </div>
                 </div>
 
@@ -141,47 +139,23 @@ require './partials/menuLateral.php';
                             <span>(<?php echo $fotos?>)</span>
                         </div>
                         <div class="box-header-buttons">
-                            <a href="">ver todos</a>
+                            <a href="<?=$base?>/fotos.php?id=<?=$userInfo->id?>">ver todos</a>
                         </div>
                     </div>
                     <div class="box-body row m-20">
 
-                        <div class="user-photo-item">
-                            <a href="#modal-1" rel="modal:open">
-                                <img src="media/uploads/1.jpg" />
-                            </a>
-                            <div id="modal-1" style="display:none">
-                                <img src="media/uploads/1.jpg" />
-                            </div>
-                        </div>
-
-                        <div class="user-photo-item">
-                            <a href="#modal-2" rel="modal:open">
-                                <img src="media/uploads/1.jpg" />
-                            </a>
-                            <div id="modal-2" style="display:none">
-                                <img src="media/uploads/1.jpg" />
-                            </div>
-                        </div>
-
-                        <div class="user-photo-item">
-                            <a href="#modal-3" rel="modal:open">
-                                <img src="media/uploads/1.jpg" />
-                            </a>
-                            <div id="modal-3" style="display:none">
-                                <img src="media/uploads/1.jpg" />
-                            </div>
-                        </div>
-
-                        <div class="user-photo-item">
-                            <a href="#modal-4" rel="modal:open">
-                                <img src="media/uploads/1.jpg" />
-                            </a>
-                            <div id="modal-4" style="display:none">
-                                <img src="media/uploads/1.jpg" />
-                            </div>
-                        </div>
-
+                        <?php if(count($user->photos) > 0):?>
+                            <?php foreach($user->photos as $item_photos):?>
+                                <div class="user-photo-item">
+                                    <a href="#modal-2" rel="modal:open">
+                                        <img src="<?=$base?>/media/uploads/<?=$item_photos->body?>" />
+                                    </a>
+                                    <div id="modal-2" style="display:none">
+                                        <img src="<?=$base?>/media/uploads/<?=$item_photos->body?>" />
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        <?php endif;?>
                     </div>
                 </div>
 
@@ -242,9 +216,16 @@ require './partials/menuLateral.php';
                         </div>
                     </div>
                 </div> -->
-                <?php foreach($feed as $item):?>
-                    <?php require('./partials/body.php')?>
-                <?php endforeach;?>
+                <?php if($id == $userInfo->id):?>
+                    <?php require('./partials/feedEditor.php')?>
+                <?php endif;?>
+                <?php if(count($feed) > 0):?>
+                    <?php foreach($feed as $item):?>
+                        <?php require('./partials/body.php')?>
+                    <?php endforeach;?>
+                <?php else:?>
+                    Não há postagens deste usuário.
+                <?php endif;?>
             </div>
 
         </div>

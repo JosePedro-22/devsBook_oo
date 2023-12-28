@@ -1,8 +1,8 @@
 <?php
 
-require 'config.php';
-require 'models/Auth.php';
-require 'dao/PostDAOPgsql.php';
+require_once 'config.php';
+require_once 'models/Auth.php';
+require_once 'dao/PostDAOPgsql.php';
 
 $auth = new Auth($pdo, $base);
 $userInfo = $auth->checkToken();

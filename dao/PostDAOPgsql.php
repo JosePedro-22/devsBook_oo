@@ -42,11 +42,13 @@ class PostDAOPgsql implements PostDAO {
         return $array;
     }
 
-    public function getPerfilFeed($id_user)
+    public function getUserFeed($id_user)
     {
         $array = [];
 
-        $sql = $this->pdo->prepare('SELECT * FROM posts WHERE id_user = :id_user ORDER BY created_at DESC');
+        $sql = $this->pdo->prepare('SELECT * FROM posts
+        WHERE id_user = :id_user ORDER BY 
+        created_at DESC');
         $sql->bindParam('id_user', $id_user);
         $sql->execute();
 
@@ -57,6 +59,26 @@ class PostDAOPgsql implements PostDAO {
 
         return $array;
     }
+    public function getPhotosFrom($id_user)
+    {
+        $array = [];
+
+        $sql = $this->pdo->prepare('SELECT * FROM posts 
+        WHERE id_user = :id_user 
+        AND type = :post_type
+        ORDER BY created_at DESC');
+        $sql->bindValue('id_user',$id_user);
+        $sql->bindValue(':post_type', 'photo', PDO::PARAM_STR);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $array = $this->_postListToObject($data, $id_user);
+        }
+
+        return $array;
+    }
+
     public function _postListToObject($postList, $id_user){
         $posts = [];
         $userDao = new UserDaoPgsql($this->pdo);

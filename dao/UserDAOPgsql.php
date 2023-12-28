@@ -2,6 +2,7 @@
 
 require_once 'models/User.php';
 require_once 'dao/UserRelationDAOPgsql.php';
+require_once 'dao/PostDAOPgsql.php';
 
 class UserDaoPgsql implements UserDAO {
     private $pdo;
@@ -26,11 +27,22 @@ class UserDaoPgsql implements UserDAO {
 
         if($full){
             $urDaoPgsql = new UserRelationDAOPgsql($this->pdo);
-            
-            $user->followers = $urDaoPgsql->getFollowers($user->id);
-            $user->following = $urDaoPgsql->getFollowing($user->id);
+            $postDaoPgsql = new PostDAOPgsql($this->pdo);
 
-            $user->photos = [];
+            $user->followers = $urDaoPgsql->getFollowers($user->id);
+            foreach($user->followers as $key => $follower_id){
+                $newUser = $this->findById($follower_id);
+                $user->followers[$key] = $newUser;
+            }
+            
+            $user->following = $urDaoPgsql->getFollowing($user->id);
+            foreach($user->following as $key => $following_id){
+                $newUser = $this->findById($following_id);
+                $user->following[$key] = $newUser;
+            }
+
+            $user->photos = $postDaoPgsql->getPhotosFrom($user->id);
+
 
         }
         return $user;
