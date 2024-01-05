@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once 'body-script.php';
 
 $actionPhrase = '';
 switch ($item->type){
@@ -7,8 +8,9 @@ switch ($item->type){
     case 'photo': $actionPhrase = 'postou uma foto';
         break;
 }
+
 ?>
-<div class="box feed-item">
+<div class="box feed-item" data-id="<?=$item->id;?>">
     <div class="box-body">
         <div class="feed-item-head row mt-20 m-width-20">
             <div class="feed-item-head-photo">
@@ -32,27 +34,6 @@ switch ($item->type){
              <div class="msg-btn"><?=count($item->comments)?></div>
         </div>
         <div class="feed-item-comments">
-            
-            <!-- <div class="fic-item row m-height-10 m-width-20">
-                <div class="fic-item-photo">
-                    <a href=""><img src="<?=$base?>/media/avatars/avatar.jpg" /></a>
-                </div>
-                <div class="fic-item-info">
-                    <a href=""><?=$userInfo->name?></a>
-                    Comentando no meu próprio post
-                </div>
-            </div>
-
-            <div class="fic-item row m-height-10 m-width-20">
-                <div class="fic-item-photo">
-                    <a href=""><img src="<?=$base?>/media/avatars/avatar.jpg" /></a>
-                </div>
-                <div class="fic-item-info">
-                    <a href=""><?=$userInfo->name?></a>
-                    Muito legal, parabéns!
-                </div>
-            </div> -->
-
             <div class="fic-answer row m-height-10 m-width-20">
                 <div class="fic-item-photo">
                     <a href="<?=$base;?>/perfil.php"><img src="<?=$base?>/media/avatars/<?=$userInfo->avatar;?>" /></a>

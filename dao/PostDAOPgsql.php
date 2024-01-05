@@ -2,6 +2,7 @@
 require_once 'models/Post.php';
 require_once 'dao/UserRelationDAOPgsql.php';
 require_once 'dao/UserDAOPgsql.php';
+require_once 'dao/PostLikeDAOPgsql.php';
 
 class PostDAOPgsql implements PostDAO {
     private $pdo;
@@ -82,6 +83,7 @@ class PostDAOPgsql implements PostDAO {
     public function _postListToObject($postList, $id_user){
         $posts = [];
         $userDao = new UserDaoPgsql($this->pdo);
+        $postLike = new PostLikeDAOPgsql($this->pdo);
 
         foreach($postList as $postItem){
             $newPost = new Post();
@@ -97,8 +99,8 @@ class PostDAOPgsql implements PostDAO {
 
             $newPost->user = $userDao->findById($postItem['id_user']);
 
-            $newPost->likeCount = 0;
-            $newPost->liked = false;
+            $newPost->likeCount = $postLike->getlikePost($newPost->id);
+            $newPost->liked = $postLike->isLiked($newPost->id, $id_user);
 
             $newPost->comments = [];
             $posts[] = $newPost;
