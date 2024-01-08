@@ -11,7 +11,23 @@ class UserRelationDaoPgsql implements UserRelationsDAO {
 
     public function insert(UserRelations $relations)
     {
-        
+        $sql = $this->pdo->prepare("INSERT INTO userrelations 
+        (user_from, user_to) VALUES
+        (:user_from,:user_to)");
+
+        $sql->bindValue('user_from', $relations->user_from);
+        $sql->bindValue('user_to', $relations->user_to);
+        $sql->execute();
+    }
+
+    public function delete(UserRelations $relations)
+    {
+        $sql = $this->pdo->prepare("DELETE FROM userrelations 
+        WHERE user_from = :user_from AND user_to = :user_to");
+
+        $sql->bindValue('user_from', $relations->user_from);
+        $sql->bindValue('user_to', $relations->user_to);
+        $sql->execute();
     }
 
     public function getFollowing($id)
@@ -49,4 +65,19 @@ class UserRelationDaoPgsql implements UserRelationsDAO {
         }
         return $users;
     }
+
+    public function isFollowing($id1, $id2){
+
+        $sql = $this->pdo->prepare("SELECT * FROM userrelations WHERE 
+        user_from = :user_from AND user_to = :user_to");
+
+        $sql->bindValue('user_from', $id1);
+        $sql->bindValue('user_to',$id2);
+        $sql->execute();
+
+        if($sql->rowCount() > 0)return true;
+        else return false;
+    }
+
+   
 }

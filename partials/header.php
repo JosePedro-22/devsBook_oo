@@ -15,13 +15,13 @@
             <div class="head-side">
                 <div class="head-side-left">
                     <div class="search-area">
-                        <form method="GET" action="<?=$base?>/search.php">
+                        <form method="GET" action="<?=$base?>/Search.php">
                             <input type="search" placeholder="Pesquisar" name="s" />
                         </form>
                     </div>
                 </div>
                 <div class="head-side-right">
-                    <a href="<?=$base;?>/perfil.php/?id=<?=$userInfo->id?>" class="user-area">
+                    <a href="<?=$base;?>/Perfil.php/?id=<?=$userInfo->id?>" class="user-area">
                         <div class="user-area-text"><?=$userInfo->name;?></div>
                         <div class="user-area-icon">
                             <img src="<?=$base;?>/media/avatars/<?=$userInfo->avatar;?>" />

@@ -29,7 +29,7 @@ require './partials/menuLateral.php';
             <div class="full-friend-list">
                 <?php foreach($userList as $item):?>
                     <div class="friend-icon">
-                        <a href="<?=$base?>/perfil.php/?id=<?=$item->id?>">
+                        <a href="<?=$base?>/Perfil.php/?id=<?=$item->id?>">
                             <div class="friend-icon-avatar">
                                 <img src="<?=$base?>/media/avatars/<?=$item->avatar?>" />
                             </div>

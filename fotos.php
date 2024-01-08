@@ -32,7 +32,7 @@ require './partials/menuLateral.php';
                 <div class="profile-cover" style="background-image: url('<?=$base?>/media/covers/<?=$user->cover?>');"></div>
                 <div class="profile-info m-20 row">
                     <div class="profile-info-avatar">
-                        <a href="<?=$base?>/perfil.php/?id=<?=$user->id?>">
+                        <a href="<?=$base?>/Perfil.php/?id=<?=$user->id?>">
                             <img src="<?=$base?>/media/avatars/<?=$user->avatar?>" />
                         </a>
                     </div>

@@ -27,7 +27,7 @@ if($name && $email){
             $userInfo->email = $email;
         }else{
             $_SESSION['FLASH'] = 'Email já existe';
-            header('Location: '.$base.'/configuracoes.php');
+            header('Location: '.$base.'/Configuracoes.php');
             exit;
         }
     }
@@ -35,14 +35,14 @@ if($name && $email){
     $birthdate = explode('/',$birthdate);
     if(count($birthdate) != 3){
         $_SESSION['flash'] = 'Data de nascimento invalida!';
-        header('Location: '.$base.'/configuracoes.php');
+        header('Location: '.$base.'/Configuracoes.php');
         exit;
     }
 
     $birthdate = $birthdate[2].'-'.$birthdate[1].'-'.$birthdate[0];
     if(strtotime($birthdate) === false){
         $_SESSION['flash'] = 'Data de nascimento invalida!';
-        header('Location: '.$base.'/configuracoes.php');
+        header('Location: '.$base.'/Configuracoes.php');
         exit;
     }
     $userInfo->birthdate = $birthdate;
@@ -52,7 +52,7 @@ if($name && $email){
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $userInfo->password = $hash;
         }else{
-            header('Location: '.$base.'configuracoes.php');
+            header('Location: '.$base.'Configuracoes.php');
             exit;
         }
     }
@@ -157,5 +157,5 @@ if($name && $email){
     $userDao->update($userInfo);
 }
 
-header('Location: '.$base.'/configuracoes.php');
+header('Location: '.$base.'/Configuracoes.php');
 exit;

@@ -33,7 +33,7 @@ require './partials/menuLateral.php';
                 <div class="profile-cover" style="background-image: url('<?=$base?>/media/covers/<?=$user->cover?>');"></div>
                 <div class="profile-info m-20 row">
                     <div class="profile-info-avatar">
-                        <a href="<?=$base?>/perfil.php/?id=<?=$user->id?>">
+                        <a href="<?=$base?>/Perfil.php/?id=<?=$user->id?>">
                             <img src="<?=$base?>/media/avatars/<?=$user->avatar?>" />
                         </a>
                     </div>
@@ -81,7 +81,7 @@ require './partials/menuLateral.php';
                             <?php if(count($user->followers) > 0 ):?>
                                 <?php foreach($user->followers as $item):?>
                                     <div class="friend-icon ">
-                                        <a href="<?=$base?>/perfil.php/?id=<?=$item->id?>">
+                                        <a href="<?=$base?>/Perfil.php/?id=<?=$item->id?>">
                                             <div class="friend-icon-avatar">
                                                 <img src="<?=$base?>/media/avatars/<?=$item->avatar?>" />
                                             </div>
@@ -105,7 +105,7 @@ require './partials/menuLateral.php';
                                 <?php if(count($user->following) > 0 ):?>
                                     <?php foreach($user->following as $item):?>
                                         <div class="friend-icon">
-                                            <a href="<?=$base?>/perfil.php/?id=<?=$item->id?>">
+                                            <a href="<?=$base?>/Perfil.php/?id=<?=$item->id?>">
                                                 <div class="friend-icon-avatar">
                                                     <img src="<?=$base?>/media/avatars/<?=$item->avatar?>" />
                                                 </div>

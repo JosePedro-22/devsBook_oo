@@ -14,10 +14,10 @@ switch ($item->type){
     <div class="box-body">
         <div class="feed-item-head row mt-20 m-width-20">
             <div class="feed-item-head-photo">
-                <a href="<?=$base;?>/perfil.php?id=<?=$item->user->id;?>"><img src="<?=$base?>/media/avatars/<?=$item->user->avatar;?>" /></a>
+                <a href="<?=$base;?>/Perfil.php?id=<?=$item->user->id;?>"><img src="<?=$base?>/media/avatars/<?=$item->user->avatar;?>" /></a>
             </div>
             <div class="feed-item-head-info">
-                <a href="<?=$base;?>/perfil.php?id=<?=$item->user->id;?>"><span class="fidi-name"><?=$item->user->name;?></span></a>
+                <a href="<?=$base;?>/Perfil.php?id=<?=$item->user->id;?>"><span class="fidi-name"><?=$item->user->name;?></span></a>
                 <span class="fidi-action"><?=$actionPhrase;?></span>
                 <br/>
                 <span class="fidi-date"><?=date('d/m/Y', strtotime($item->created_at));?></span>
@@ -38,10 +38,10 @@ switch ($item->type){
                 <?php foreach($item->comments as $comment):?>
                     <div class="fic-item row m-height-10 m-width-20">
                         <div class="fic-item-photo">
-                            <a href="<?=$base;?>/perfil.php?id=<?$comment->id_user?>"><img src="<?=$base;?>/media/avatars/<?=$comment->user->avatar?>" /></a>
+                            <a href="<?=$base;?>/Perfil.php?id=<?$comment->id_user?>"><img src="<?=$base;?>/media/avatars/<?=$comment->user->avatar?>" /></a>
                         </div>
                         <div class="fic-item-info">
-                            <a href="<?=$base;?>/perfil.php?id=<?$comment->id_user?>"><?=$comment->user->name?></a>
+                            <a href="<?=$base;?>/Perfil.php?id=<?$comment->id_user?>"><?=$comment->user->name?></a>
                             <?=$comment->body?>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ switch ($item->type){
 
             <div class="fic-answer row m-height-10 m-width-20">
                 <div class="fic-item-photo">
-                    <a href="<?=$base;?>/perfil.php"><img src="<?=$base?>/media/avatars/<?=$userInfo->avatar;?>" /></a>
+                    <a href="<?=$base;?>/Perfil.php"><img src="<?=$base?>/media/avatars/<?=$userInfo->avatar;?>" /></a>
                 </div>
                 <input type="text" class="fic-item-field" placeholder="Escreva um comentário" />
             </div>
