@@ -1,5 +1,5 @@
 <script>
-window.onload = function() {
+window.addEventListener('load', function() {
     document.querySelectorAll('.like-btn').forEach(item=>{
         item.addEventListener('click', ()=>{
             let id = item.closest('.feed-item').getAttribute('data-id');
@@ -71,7 +71,9 @@ window.onload = function() {
             }, 500);
         });
     });
-};
+});
+
+
 
 
 </script>
