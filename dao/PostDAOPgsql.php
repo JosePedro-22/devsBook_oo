@@ -61,15 +61,10 @@ class PostDAOPgsql implements PostDAO {
         
     }
 
-    public function getHomeFeed($id_user)
+    public function getHomeFeed($id_user, $page)
     {
         $array = [];
         $parpage = 3;
-
-        $page = intval(filter_input(INPUT_GET, 'p'));
-        if ($page < 1){
-            $page = 1;
-        }
 
         $offset = ($page -1)*$parpage;
 
@@ -101,20 +96,35 @@ class PostDAOPgsql implements PostDAO {
         return $array;
     }
 
-    public function getUserFeed($id_user)
+    public function getUserFeed($id_user, $page = 1)
     {
-        $array = [];
+        $array = ['feed' => []];
+        $parpage = 3;
 
-        $sql = $this->pdo->prepare('SELECT * FROM posts
+        $offset = ($page -1)*$parpage;
+
+
+        $sql = $this->pdo->prepare("SELECT * FROM posts
         WHERE id_user = :id_user ORDER BY 
-        created_at DESC');
+        created_at DESC");
         $sql->bindParam('id_user', $id_user);
         $sql->execute();
 
         if($sql->rowCount() > 0){
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-            $array = $this->_postListToObject($data, $id_user);
+            $array['feed'] = $this->_postListToObject($data, $id_user);
         }
+
+        $sql = $this->pdo->prepare("SELECT COUNT(*) as c 
+        FROM posts WHERE id_user = :id_user");
+        $sql->bindParam('id_user', $id_user);
+        $sql->execute();
+
+        $totalData = $sql->fetch();
+        $total = $totalData['c'];
+
+        $array['pages'] = ceil($total/$parpage);
+        $array['currentPage'] = $page;
 
         return $array;
     }

@@ -30,7 +30,16 @@ $dataAtual = new DateTime();
 $diferenca = $dataAtual->diff($dataNascimento);
 $years = $diferenca->y;
 
-$feed = $postDao->getUserFeed($id);
+$page = intval(filter_input(INPUT_GET, 'p'));
+if ($page < 1){
+    $page = 1;
+}
+
+$info = $postDao->getUserFeed($id, $page);
+
+$feed = $info['feed'];
+$pages = $info['pages'];
+$currentPage = $info['currentPage'];
 
 if($id != $userInfo->id) $activeMenu = '';
 
@@ -175,9 +184,15 @@ require './partials/menuLateral.php';
                     <?php foreach($feed as $item):?>
                         <?php require('./partials/body.php')?>
                     <?php endforeach;?>
+                    <div class="feed-pagination">
+                        <?php for($q = 0; $q < $pages; $q++):?>
+                            <a href="<?=$base;?>/Perfil.php?id=<?=$id?>?p=<?=$q+1?>" class="<?=($q+1 == $currentPage)?    'active':''?>"><?=$q+1?></a>
+                        <?php endfor;?>
+                    </div>  
                 <?php else:?>
                     Não há postagens deste usuário.
                 <?php endif;?>
+
             </div>
 
         </div>
