@@ -78,10 +78,6 @@ class PostDAOPgsql implements PostDAO {
         $userList = $urDao->getFollowing($id_user);
         $userList[] = $id_user;
 
-        // $sql = $this->pdo->query("SELECT * FROM posts WHERE id_user  
-        // IN (".implode(',',$userList).") 
-        // ORDER BY created_at DESC, id DESC LIMIT $offset, $parpage");
-
         $sql = $this->pdo->query("
             SELECT * FROM posts 
             WHERE id_user IN (".implode(',',$userList).") 
@@ -91,8 +87,17 @@ class PostDAOPgsql implements PostDAO {
 
         if($sql->rowCount() > 0){
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-            $array = $this->_postListToObject($data, $id_user);
+            $array['feed'] = $this->_postListToObject($data, $id_user);
         }
+
+        $sql = $this->pdo->query("SELECT COUNT(*) as c 
+        FROM posts WHERE id_user IN (".implode(',',$userList).")");
+
+        $totalData = $sql->fetch();
+        $total = $totalData['c'];
+
+        $array['pages'] = ceil($total/$parpage);
+        $array['currentPage'] = $page;
         return $array;
     }
 
