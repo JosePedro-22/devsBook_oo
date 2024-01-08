@@ -49,4 +49,12 @@ class PostCommentDAOPgsql implements PostCommentDAO{
         $sql->bindValue('created_at',$postComment->created_at);
         $sql->execute();
     }
+
+    public function deleteFromPost($id){
+        $sql = $this->pdo->prepare("DELETE FROM postlikes 
+            WHERE id_post = :id_post "); 
+
+        $sql->bindParam('id_post',$id);
+        $sql->execute();
+    }
 }

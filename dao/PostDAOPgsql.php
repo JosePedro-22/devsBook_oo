@@ -26,16 +26,68 @@ class PostDAOPgsql implements PostDAO {
         $sql->execute();
     }
 
+    public function delete($id, $id_from)
+    {
+        $postLikeDao = new PostLikeDAOPgsql($this->pdo);
+        $postCommentDao = new PostCommentDAOPgsql($this->pdo);
+
+        $sql = $this->pdo->prepare("SELECT * FROM posts 
+            WHERE id = :id AND id_user = :id_user"); 
+    
+        $sql->bindParam('id',$id);
+        $sql->bindValue('id_user', $id_from);
+        $sql->execute();
+
+        if($sql->rowCount()){
+            $post = $sql->fetch(PDO::FETCH_ASSOC);
+
+            $postLikeDao->deleteFromPost($id);
+            $postCommentDao->deleteFromPost($id);
+
+            if($post['type'] === 'photo'){
+                $img = 'media/uploads'.$post['body'];
+                if(file_exists($img)){
+                    unlink($img);
+                }
+            }
+
+            $sql = $this->pdo->prepare("DELETE FROM posts 
+            WHERE id = :id AND id_user = :id_user"); 
+        
+            $sql->bindParam('id',$id);
+            $sql->bindValue('id_user', $id_from);
+            $sql->execute();
+        }
+        
+    }
+
     public function getHomeFeed($id_user)
     {
         $array = [];
+        $parpage = 3;
+
+        $page = intval(filter_input(INPUT_GET, 'p'));
+        if ($page < 1){
+            $page = 1;
+        }
+
+        $offset = ($page -1)*$parpage;
+
 
         $urDao = new UserRelationDaoPgsql($this->pdo);
         $userList = $urDao->getFollowing($id_user);
         $userList[] = $id_user;
 
-        $sql = $this->pdo->query('SELECT * FROM posts
-        WHERE id_user  IN ('.implode(',',$userList).') ORDER BY created_at DESC');
+        // $sql = $this->pdo->query("SELECT * FROM posts WHERE id_user  
+        // IN (".implode(',',$userList).") 
+        // ORDER BY created_at DESC, id DESC LIMIT $offset, $parpage");
+
+        $sql = $this->pdo->query("
+            SELECT * FROM posts 
+            WHERE id_user IN (".implode(',',$userList).") 
+            ORDER BY created_at DESC, id DESC
+            LIMIT $parpage OFFSET $offset
+        ");
 
         if($sql->rowCount() > 0){
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);

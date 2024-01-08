@@ -48,4 +48,12 @@ class PostLikeDAOPgsql implements PostLikeDAO{
         $sql->bindValue('id_post',$id_post);
         $sql->execute();
     }
+
+    public function deleteFromPost($id){
+        $sql = $this->pdo->prepare("DELETE FROM postlikes 
+            WHERE id_post = :id_post "); 
+
+        $sql->bindParam('id_post',$id);
+        $sql->execute();
+    }
 }
