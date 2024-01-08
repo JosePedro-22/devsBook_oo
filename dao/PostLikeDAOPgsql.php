@@ -2,7 +2,7 @@
 
 require_once './models/PostLike.php';
 
-class PostLikeDAOPgsql extends PostLike{
+class PostLikeDAOPgsql implements PostLikeDAO{
     private $pdo;
 
     public function __construct(PDO $driver) {
